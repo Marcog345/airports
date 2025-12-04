@@ -1,7 +1,9 @@
 package br.dev.marco.airports.service;
 
 import br.dev.marco.airports.DTO.AirportMinDTO;
+import br.dev.marco.airports.DTO.AirportNearMeDTO;
 import br.dev.marco.airports.entities.Airport;
+import br.dev.marco.airports.projections.AirportNearMeProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import br.dev.marco.airports.repositories.AirportRepository;
 import org.springframework.stereotype.Service;
@@ -32,5 +34,13 @@ public class AirportService
     public Airport findByIataCode(String iataCode){
         Airport result = airportRepository.findByIataCode(iataCode);
         return result;
+    }
+    public List<AirportNearMeDTO> findNearMe(double latitude, double longitude) {
+        List<AirportNearMeProjection> resultNearAirports = airportRepository.findNearMe(latitude, longitude);
+        
+        List<AirportNearMeDTO> resultDTO = resultNearAirports.stream()
+                .map(x -> new AirportNearMeDTO(x)).toList();
+        
+        return resultDTO;
     }
 }
