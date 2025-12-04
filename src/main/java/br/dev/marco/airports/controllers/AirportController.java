@@ -1,7 +1,6 @@
 package br.dev.marco.airports.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
+import br.dev.marco.airports.DTO.AirportMinDTO;
 import br.dev.marco.airports.entities.Airport;
 import br.dev.marco.airports.service.AirportService;
 import java.util.List;
@@ -21,28 +20,28 @@ public class AirportController {
     @Autowired
     private AirportService airportService;
 
-/**
- * Endpoint /airports/airport
- * Retorna TODOS os aeroportos da base de dados.
- * @return 
- */
-    
+    /**
+     * Endpoint /airports/airport Retorna TODOS os aeroportos da base de dados.
+     *
+     * @return
+     */
     @GetMapping("/city/{cityName}")
     public ResponseEntity<List<Airport>> findByCityIgnoreCase(@PathVariable String cityName) {
         List<Airport> result = airportService.findByCity(cityName);
         if (result.isEmpty()) {
-        return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(result);
+        }
     }
-        else{
-                return ResponseEntity.ok(result);
-                }
+
+    @GetMapping("/country/{countryName}")
+    public ResponseEntity<List<AirportMinDTO>> findByCountryIgnoreCase(@PathVariable String countryName) {
+        List<AirportMinDTO> result = airportService.findByCountry(countryName);
+        if (result.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(result);
+        }
     }
-    
-    
-    // Adicionar as etapas aqui
-    
-    
-    
-    
-    
 }
